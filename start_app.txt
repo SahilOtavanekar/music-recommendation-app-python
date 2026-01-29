@@ -1,1 +1,3 @@
-KGAT_3f95d210b1a99cb1bbc06ff912a30c5c
+cd src 
+python preprocess.py
+streamlit run start_app.py
