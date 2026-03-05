@@ -53,22 +53,17 @@ logging.info("🧹 Cleaning text...")
 df['cleaned_text'] = df['text'].apply(preprocess_text)
 logging.info("✅ Text cleaned.")
 
-# Vectorization
+# Matrix and Vectorization
 logging.info("🔠 Vectorizing using TF-IDF...")
 tfidf = TfidfVectorizer(max_features=5000)
 tfidf_matrix = tfidf.fit_transform(df['cleaned_text'])
 logging.info("✅ TF-IDF matrix shape: %s", tfidf_matrix.shape)
 
-# Cosine similarity
-logging.info("📐 Calculating cosine similarity...")
-cosine_sim = cosine_similarity(tfidf_matrix, tfidf_matrix)
-logging.info("✅ Cosine similarity matrix generated.")
-
 # Save everything
 models_dir = os.path.join(BASE_DIR, "..", "models")
 joblib.dump(df, os.path.join(models_dir, 'df_cleaned.pkl'))
 joblib.dump(tfidf_matrix, os.path.join(models_dir, 'tfidf_matrix.pkl'))
-joblib.dump(cosine_sim, os.path.join(models_dir, 'cosine_sim.pkl'))
-logging.info("💾 Data saved to disk in models/ directory.")
+joblib.dump(tfidf, os.path.join(models_dir, 'tfidf_vectorizer.pkl'))
+logging.info("💾 Data and vectorizer saved to disk in models/ directory.")
 
 logging.info("✅ Preprocessing complete.")

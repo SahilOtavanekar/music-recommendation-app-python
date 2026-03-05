@@ -1,3 +1,4 @@
+from sklearn.metrics.pairwise import cosine_similarity
 import os
 import joblib
 import logging
@@ -18,11 +19,10 @@ logging.basicConfig(
 logging.info("🔁 Loading data...")
 try:
     models_dir = os.path.join(BASE_DIR, "..", "models")
-    df_path = os.path.join(models_dir, 'df_cleaned.pkl')
-    sim_path = os.path.join(models_dir, 'cosine_sim.pkl')
-    df = joblib.load(df_path)
-    cosine_sim = joblib.load(sim_path)
-    logging.info("✅ Data loaded successfully.")
+    df = joblib.load(os.path.join(models_dir, 'df_cleaned.pkl'))
+    tfidf_matrix = joblib.load(os.path.join(models_dir, 'tfidf_matrix.pkl'))
+    tfidf = joblib.load(os.path.join(models_dir, 'tfidf_vectorizer.pkl'))
+    logging.info("✅ Data and models loaded successfully.")
 except Exception as e:
     logging.error("❌ Failed to load required files: %s", str(e))
     raise e
@@ -30,13 +30,24 @@ except Exception as e:
 
 def recommend_songs(song_name, top_n=5):
     logging.info("🎵 Recommending songs for: '%s'", song_name)
-    idx = df[df['song'].str.lower() == song_name.lower()].index
-    if len(idx) == 0:
+    
+    # Get the row of the selected song
+    song_row = df[df['song'].str.lower() == song_name.lower()]
+    if song_row.empty:
         logging.warning("⚠️ Song not found in dataset.")
         return None
-    idx = idx[0]
-    sim_scores = list(enumerate(cosine_sim[idx]))
+        
+    idx = song_row.index[0]
+    
+    # Instead of loading a massive precomputed matrix (800MB+),
+    # we calculate similarity for just this one song (very fast and memory efficient)
+    song_vector = tfidf_matrix[idx]
+    cosine_sim_scores = cosine_similarity(song_vector, tfidf_matrix).flatten()
+    
+    # Get top similarity scores
+    sim_scores = list(enumerate(cosine_sim_scores))
     sim_scores = sorted(sim_scores, key=lambda x: x[1], reverse=True)[1:top_n + 1]
+    
     song_indices = [i[0] for i in sim_scores]
     logging.info("✅ Top %d recommendations ready.", top_n)
     # Create DataFrame with clean serial numbers starting from 1

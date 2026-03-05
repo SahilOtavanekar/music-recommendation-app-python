@@ -184,7 +184,6 @@ src/*.log
 
 # Project specific ignores
 data/
-models/
 .env
 *.zip
 
