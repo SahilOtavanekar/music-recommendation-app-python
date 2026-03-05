@@ -1,4 +1,4 @@
-# preprocess.py
+import os
 import pandas as pd
 import re
 import nltk
@@ -9,12 +9,15 @@ from nltk.tokenize import word_tokenize
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 
+# Get the directory where this script is located
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+
 # Setup logging
 logging.basicConfig(
     level=logging.INFO,
     format='[%(asctime)s] %(levelname)s - %(message)s',
     handlers=[
-        logging.FileHandler("preprocess.log", encoding="utf-8"),
+        logging.FileHandler(os.path.join(BASE_DIR, "preprocess.log"), encoding="utf-8"),
         logging.StreamHandler()
     ]
 )
@@ -26,7 +29,8 @@ nltk.download('stopwords')
 
 # Load and sample dataset
 try:
-    df = pd.read_csv("spotify_millsongdata.csv").sample(10000)
+    csv_path = os.path.join(BASE_DIR, "..", "data", "spotify_millsongdata.csv")
+    df = pd.read_csv(csv_path).sample(10000)
     logging.info("✅ Dataset loaded and sampled: %d rows", len(df))
 except Exception as e:
     logging.error("❌ Failed to load dataset: %s", str(e))
@@ -61,9 +65,10 @@ cosine_sim = cosine_similarity(tfidf_matrix, tfidf_matrix)
 logging.info("✅ Cosine similarity matrix generated.")
 
 # Save everything
-joblib.dump(df, 'df_cleaned.pkl')
-joblib.dump(tfidf_matrix, 'tfidf_matrix.pkl')
-joblib.dump(cosine_sim, 'cosine_sim.pkl')
-logging.info("💾 Data saved to disk.")
+models_dir = os.path.join(BASE_DIR, "..", "models")
+joblib.dump(df, os.path.join(models_dir, 'df_cleaned.pkl'))
+joblib.dump(tfidf_matrix, os.path.join(models_dir, 'tfidf_matrix.pkl'))
+joblib.dump(cosine_sim, os.path.join(models_dir, 'cosine_sim.pkl'))
+logging.info("💾 Data saved to disk in models/ directory.")
 
 logging.info("✅ Preprocessing complete.")

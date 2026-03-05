@@ -1,71 +1,87 @@
-# Music Recommendation System
+# 🎵 Music Recommendation System
 
-## Overview
+A content-based music recommender system built using Python, Scikit-Learn, and Streamlit. The application uses TF-IDF vectorization and Cosine Similarity to find similar songs based on their lyrical content.
 
-This project is a Python-based Music Recommendation System that suggests songs to users based on textual similarity of song lyrics. It uses Natural Language Processing (NLP) and Machine Learning techniques to analyze lyrics and generate recommendations.
-The project was developed as part of an academic learning process and demonstrates practical use of NLP, feature extraction, and similarity-based recommendation systems.
+## 📝 Overview
 
-## Features
+This project suggests songs based on textual similarity of lyrics, utilizing NLP and Machine Learning techniques. It demonstrates the practical application of feature extraction and similarity metrics in a real-world context.
 
-1.Text preprocessing and cleaning of song lyrics
-2.TF-IDF vectorization for feature extraction
-3.Cosine similarity for song recommendation
-4.WordCloud visualization for lyrics analysis
-5.Modular and reproducible project structure
+## 🚀 Features
 
-## Tech Stack
+- **Lyric-Based Recommendations**: Finds songs with similar themes and vocabulary.
+- **Interactive UI**: Easy-to-use dropdown menu to select songs.
+- **Fast Performance**: Precomputed similarity matrices for instant suggestions.
+- **Clean Architecture**: Organized structure following industry best practices.
+- **Visualizations**: WordCloud support for lyrics analysis.
 
--Python
--Pandas, NumPy
--Scikit-learn
--NLTK
--Matplotlib
--WordCloud
+## 🛠️ Tech Stack
 
-## How It Works
-Song lyrics are preprocessed (lowercasing, cleaning, stopword removal).
-TF-IDF is applied to convert text into numerical vectors.
-Cosine similarity is used to compute similarity between songs.
-The system recommends songs with the highest similarity scores.
+- **Python 3.13**
+- **Streamlit**: Web interface
+- **Pandas & NumPy**: Data manipulation
+- **Scikit-Learn**: TF-IDF and Cosine Similarity
+- **NLTK**: Natural language preprocessing
+- **Joblib**: Model serialization
+- **Matplotlib & WordCloud**: Data visualization
 
-## Setup Instructions
+## 📂 Project Structure
 
-Clone the repository:
+```text
+├── data/               # Raw and processed datasets (ignored by git)
+├── models/             # Serialized models and similarity matrices (ignored by git)
+├── notebooks/          # Jupyter notebooks for experimentation
+├── src/                # Source code
+│   ├── main.py         # Streamlit application entry point
+│   ├── preprocess.py   # Script for data cleaning and model building
+│   └── recommend.py    # Logic for generating recommendations
+├── requirements.txt    # Project dependencies
+└── .env.example        # Template for environment variables
+```
 
+## ⚙️ Setup & Installation
+
+### 1. Clone the repository
+```bash
 git clone https://github.com/SahilOtavanekar/music-recommendation-app-python.git
+cd music-recommendation-app-python
+```
 
-
-Create and activate a virtual environment:
-
+### 2. Create a virtual environment
+```bash
 python -m venv .venv
-source .venv/Scripts/activate
+# On Windows:
+.venv\Scripts\activate
+# On Unix or MacOS:
+source .venv/bin/activate
+```
 
-
-Install dependencies:
-
+### 3. Install dependencies
+```bash
 pip install -r requirements.txt
+```
 
+### 4. Data Preparation
+Place your `spotify_millsongdata.csv` in the `data/` directory. Then run the preprocessing script to generate the models:
+```bash
+python src/preprocess.py
+```
 
-Run the notebook or scripts from the src folder.
+## 🖥️ Usage
 
-## Dataset
+To launch the Streamlit application:
+```bash
+streamlit run src/main.py
+```
+The app will be available at `http://localhost:8501`.
 
-The project uses a publicly available song lyrics dataset (downloaded via Kaggle).
-Dataset files are not included in the repository to keep it lightweight.
+## 📂 Dataset
 
-## Academic Relevance
+The project uses a publicly available song lyrics dataset. Dataset files are excluded from the repository to keep it lightweight; please ensure the `data/` directory is correctly populated before running simulation scripts.
 
-Demonstrates NLP-based recommendation systems
+## 🎓 Academic Relevance
 
-Applies similarity metrics in real-world data
+Developed by **Sahil Otavanekar** (MSc Data Science), this project applies similarity metrics suitable for Data Science and Machine Learning coursework.
 
-Suitable for Data Science and Machine Learning coursework
+## 📝 License
 
-## Author
-
-Sahil Otavanekar
-MSc Data Science
-
-## License
-
-This project is intended for educational and academic use.
+This project is open-source and available under the MIT License.

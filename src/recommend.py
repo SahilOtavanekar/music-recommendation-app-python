@@ -1,21 +1,27 @@
-# recommend.py
+import os
 import joblib
 import logging
+
+# Get the directory where this script is located
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
 # Setup logging
 logging.basicConfig(
     level=logging.INFO,
     format='[%(asctime)s] %(levelname)s - %(message)s',
     handlers=[
-        logging.FileHandler("recommend.log", encoding="utf-8"),
+        logging.FileHandler(os.path.join(BASE_DIR, "recommend.log"), encoding="utf-8"),
         logging.StreamHandler()
     ]
 )
 
 logging.info("🔁 Loading data...")
 try:
-    df = joblib.load('df_cleaned.pkl')
-    cosine_sim = joblib.load('cosine_sim.pkl')
+    models_dir = os.path.join(BASE_DIR, "..", "models")
+    df_path = os.path.join(models_dir, 'df_cleaned.pkl')
+    sim_path = os.path.join(models_dir, 'cosine_sim.pkl')
+    df = joblib.load(df_path)
+    cosine_sim = joblib.load(sim_path)
     logging.info("✅ Data loaded successfully.")
 except Exception as e:
     logging.error("❌ Failed to load required files: %s", str(e))

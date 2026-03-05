@@ -179,13 +179,14 @@ cython_debug/
 
 
 # logs file
-preprocess.log
-recommend.log
+*.log
+src/*.log
 
-# app files
-cosine_sim.pkl
-df_cleaned.pkl
-tfidf_matrix.pkl
-kaggle.json
-spotify-million-song-dataset.zip
-spotify_millsongdata.csv
+# Project specific ignores
+data/
+models/
+.env
+*.zip
+
+# PyCharm
+.idea/
